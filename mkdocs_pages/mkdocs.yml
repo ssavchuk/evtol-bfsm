@@ -1,0 +1,43 @@
+site_name: eVTOL BFSM documentation
+
+# Описание сайта. Добавляется в meta в html-заголовке каждой страницы.
+site_description: Project documentation for eVTOL BFSM.
+
+# site_url: https://www.mkdocs.org/
+
+# site_author: BFSM Team
+
+# repo_url: https://github.com/mkdocs/mkdocs/
+
+nav:
+  - Home: index.md
+  - Теория:
+    - PID: pid/
+
+markdown_extensions:
+  - markdown.extensions.nl2br
+
+# theme: material
+# theme: bootstrap4
+# theme: readthedocs
+
+theme:
+  name: material
+  features:
+    - content.code.copy
+    - tabs
+  palette:
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+    - media: "(prefers-color-scheme: light)"
+      scheme: default 
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+plugins:
+  - search:
+      lang: ["ru", "en"]
