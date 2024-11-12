@@ -6,3 +6,7 @@ https://habr.com/ru/articles/536448/
 
 Пошаговая инструкция как использовать MkDocs для создания сайта с документацией продукта
 https://habr.com/ru/companies/rostelecom/articles/570098/
+
+https://pypi.org/project/mkdocs-video/
+
+mkdocs gh-deploy

@@ -12,7 +12,8 @@ site_description: Project documentation for eVTOL BFSM.
 nav:
   - Home: index.md
   - Теория:
-    - PID: pid/
+    - PID:
+      - Что такое PID, на что влияет и как настроить: theory/pid/chto-takoe-pid-na-chto-vliyaet-i-kak-nastroit.md
 
 markdown_extensions:
   - markdown.extensions.nl2br
@@ -41,3 +42,12 @@ theme:
 plugins:
   - search:
       lang: ["ru", "en"]
+  - i18n:
+      docs_structure: suffix
+      default_language: ru
+      languages:
+        ru:
+          name: Russian
+          build: true
+          site_name: "Документация для проекта eVTOL BFSM"
+

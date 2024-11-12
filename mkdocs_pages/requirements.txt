@@ -3,4 +3,5 @@ mkdocs-material
 # mkdocs-mermaid2-plugin
 #mkdocs-theme-bootstrap4
 # mkdocs-video
+mkdocs-i18n
 pymdown-extensions
