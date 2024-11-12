@@ -11,9 +11,20 @@ site_description: Project documentation for eVTOL BFSM.
 
 nav:
   - Home: index.md
+  - Летаки:
+    - BFSM: drones/BFSM/BFSM.md
+    - Чемодан: drones/suitcase/suitcase.md
+    - Куб: drones/cube/cube.md
+  # - Оборудование:
+  - Настройки:
+    - Компенсация горизонта: settings/horizon_compensation.md
   - Теория:
     - PID:
-      - Что такое PID, на что влияет и как настроить: theory/pid/chto-takoe-pid-na-chto-vliyaet-i-kak-nastroit.md
+      - Что такое PID, на что влияет и как настроить: theory/pid/chto-takoe-pid-na-chto-vliyaet-i-kak-nastroit/chto-takoe-pid-na-chto-vliyaet-i-kak-nastroit.md
+    - IMU: theory/IMU.md
+    - MAVLink: theory/MAVLink.md
+    - Питание (аккумуляторы): theory/power.md
+    - Режимы полётов: theory/flight_modes.md
 
 markdown_extensions:
   - markdown.extensions.nl2br
@@ -34,7 +45,7 @@ theme:
         icon: material/brightness-4
         name: Switch to system preference
     - media: "(prefers-color-scheme: light)"
-      scheme: default 
+      scheme: default
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
