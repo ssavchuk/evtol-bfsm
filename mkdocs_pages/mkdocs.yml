@@ -17,6 +17,8 @@ nav:
     - Куб: drones/cube/cube.md
   # - Оборудование:
   - Настройки:
+    - ВМГ: settings/vmg.md
+    - Режимы полётов: settings/flight_modes.md
     - Компенсация горизонта: settings/horizon_compensation.md
   - Теория:
     - PID:
@@ -24,7 +26,8 @@ nav:
     - IMU: theory/IMU.md
     - MAVLink: theory/MAVLink.md
     - Питание (аккумуляторы): theory/power.md
-    - Режимы полётов: theory/flight_modes.md
+  - Разное:
+    - Список для полевых исспытаний: misc/field_tests_checklist.md
 
 markdown_extensions:
   - markdown.extensions.nl2br
