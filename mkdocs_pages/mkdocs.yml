@@ -64,10 +64,10 @@ plugins:
       lang: ["ru", "en"]
   - i18n:
       docs_structure: suffix
-      default_language: ru
       languages:
-        ru:
+        - locale: ru
           name: Russian
+          default: true
           build: true
           site_name: "Документация для проекта eVTOL BFSM"
 
