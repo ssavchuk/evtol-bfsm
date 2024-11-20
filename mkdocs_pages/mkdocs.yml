@@ -15,11 +15,16 @@ nav:
     - BFSM: drones/BFSM/BFSM.md
     - Чемодан: drones/suitcase/suitcase.md
     - Куб: drones/cube/cube.md
-  # - Оборудование:
   - Настройки:
+    - Оборудование:
+      - GPS:
+        - NEO 3 Pro GPS: settings/equipment/GPS/NEO_3_Pro_GPS.md
+      - Дисплеи: settings/equipment/display.md
+    - Параметры: settings/parameters.md
     - ВМГ: settings/vmg.md
     - Режимы полётов: settings/flight_modes.md
     - Компенсация горизонта: settings/horizon_compensation.md
+    - Прошивки: settings/firmware.md
   - Теория:
     - PID:
       - Что такое PID, на что влияет и как настроить: theory/pid/chto-takoe-pid-na-chto-vliyaet-i-kak-nastroit/chto-takoe-pid-na-chto-vliyaet-i-kak-nastroit.md
@@ -41,6 +46,7 @@ theme:
   features:
     - content.code.copy
     - tabs
+    - navigation.indexes
   palette:
     - media: "(prefers-color-scheme: dark)"
       scheme: slate

@@ -24,6 +24,7 @@ python -m mkdocs serve
 ## Деплой:
 
 ```
+cd mkdocs_pages
 mkdocs gh-deploy
 ```
 
