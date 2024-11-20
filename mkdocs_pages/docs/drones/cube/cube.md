@@ -21,7 +21,7 @@ Setup -> Mandatory Hardware -> Frame Type -> X
 
 <span style="color:red">Настроить до калибровки компаса!</span>
 
-[NEO 3 Pro GPS](/settings/equipment/GPS/NEO_3_Pro_GPS)
+[NEO 3 Pro GPS](../../../settings/equipment/GPS/NEO_3_Pro_GPS)
 
 ## OSD
 
