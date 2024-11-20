@@ -12,4 +12,4 @@ jobs:
         with:
           python-version: 3.x
       - run: pip install mkdocs mkdocs-material mkdocs-static-i18n pymdown-extensions
-      - run: mkdocs gh-deploy --force
+      - run: cd mkdocs_pages && mkdocs gh-deploy --force
