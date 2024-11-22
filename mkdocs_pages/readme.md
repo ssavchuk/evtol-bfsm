@@ -36,3 +36,5 @@ mkdocs gh-deploy
 [MarkedText — маркдаун здорового человека](https://habr.com/ru/articles/536448/)
 
 [Пошаговая инструкция как использовать MkDocs для создания сайта с документацией продукта](https://habr.com/ru/companies/rostelecom/articles/570098/)
+
+[Docs as Code для художественной литературы. Делаем творческий сайт ребенка с помощью MkDocs](https://habr.com/ru/articles/720584/)

@@ -2,7 +2,7 @@
 
 CUAV V5+ Autopilot Pixhack PX4 APM Flight Controller
 
-![CUAV V5+.jpg](CUAV V5+.jpg){ width=50% }
+![CUAV V5+.jpg](CUAV V5+.jpg)
 
 # Прошивка
 
@@ -23,7 +23,7 @@ Setup -> Mandatory Hardware -> Frame Type -> X
 
 [NEO 3 Pro GPS](../../../settings/equipment/GPS/NEO_3_Pro_GPS)
 
-## OSD
+## OLED Dosplay
 
 NTF_DISPLAY_TYPE:1 (ssd1306)
 
@@ -47,10 +47,10 @@ Setup -> Mandatory Hardware -> Accel Clibration -> Calibrate Level
 
 Setup -> Mandatory Hardware ->  Initial Tune Params
 
-Airscrew size in inch: 10
+Airscrew size in inch: 10 (размер пропа в дюймах)
 Battery cell count: 3
 
-Press button "Calculate"
+Нажать кнопку "Calculate"
 
 После чего программа расчитает следующие параметры и предложит записать их в полётный контроллер:
 
@@ -72,3 +72,5 @@ Press button "Calculate"
 * [MOT_BAT_VOLT_MIN](https://ardupilot.org/copter/docs/parameters.html#mot-bat-volt-min-battery-voltage-compensation-minimum-voltage): Battery voltage compensation minimum voltage
 * [MOT_THST_EXPO](https://ardupilot.org/copter/docs/parameters.html#mot-thst-expo-thrust-curve-expo): Thrust Curve Expo
 * [MOT_THST_HOVER](https://ardupilot.org/copter/docs/parameters.html#mot-thst-hover-thrust-hover-value): Thrust Hover Value
+
+## Initial Tune Params

@@ -1,3 +1,3 @@
 # BFSM
 
-![BFSM](./BFSM.jpg){ width=50% }
+![BFSM](./BFSM.jpg)

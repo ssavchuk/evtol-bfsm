@@ -3,6 +3,8 @@ site_name: eVTOL BFSM documentation
 # Описание сайта. Добавляется в meta в html-заголовке каждой страницы.
 site_description: Project documentation for eVTOL BFSM.
 
+site_url: https://ssavchuk.github.io/evtol-bfsm
+
 # site_url: https://www.mkdocs.org/
 
 # site_author: BFSM Team
