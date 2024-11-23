@@ -25,6 +25,10 @@ Setup -> Mandatory Hardware -> Frame Type -> X
 
 ## OLED Dosplay
 
+2.42" inch 128x64 OLED LCD Display Module SSD1309 12864
+
+![](OLED_LCD_Display_Module.png){: style="width:25%"}
+
 NTF_DISPLAY_TYPE:1 (ssd1306)
 
 <span style="color:red">**требуется перезагрузка!**</span>
@@ -48,7 +52,7 @@ Setup -> Mandatory Hardware -> Accel Clibration -> Calibrate Level
 Setup -> Mandatory Hardware ->  Initial Tune Params
 
 Airscrew size in inch: 10 (размер пропа в дюймах)
-Battery cell count: 3
+Battery cell count: 4
 
 Нажать кнопку "Calculate"
 
@@ -110,6 +114,8 @@ Options: 0.000 .. 3.000
 Options: 0.2 .. 0.8
 
 Значение вычисляется во время Calculate Initial Tune Params
+
+> По данным параметрам подробнее можно посмотреть [здесь](../../settings/PID/PID.md)
 
 ## Battery Monitor
 
