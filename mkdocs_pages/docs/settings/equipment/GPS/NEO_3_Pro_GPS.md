@@ -1,5 +1,9 @@
 # NEO 3 Pro GPS
 
+![](neo-3-pro.jpg)
+
+[NEO 3 Pro GNSS module](https://doc.cuav.net/gps/neo-series-gnss/en/neo-3-pro.html)
+
 [NEO 3 Pro GPS](https://ardupilot.org/copter/docs/common-cuav-neo-3-pro.html)
 
 Set the following parameters in all parameter tables of Mission planner and <span style="color:red">restart after writing</span>
