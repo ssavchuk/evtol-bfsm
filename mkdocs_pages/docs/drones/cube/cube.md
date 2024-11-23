@@ -43,7 +43,7 @@ Setup -> Mandatory Hardware -> Accel Clibration -> Calibrate Accel
 
 Setup -> Mandatory Hardware -> Accel Clibration -> Calibrate Level
 
-## Battery Monitor
+## Initial Tune Params
 
 Setup -> Mandatory Hardware ->  Initial Tune Params
 
@@ -73,4 +73,43 @@ Battery cell count: 3
 * [MOT_THST_EXPO](https://ardupilot.org/copter/docs/parameters.html#mot-thst-expo-thrust-curve-expo): Thrust Curve Expo
 * [MOT_THST_HOVER](https://ardupilot.org/copter/docs/parameters.html#mot-thst-hover-thrust-hover-value): Thrust Hover Value
 
-## Initial Tune Params
+Нажать "Write to FC"
+
+> Initial Parameters successfully updated.
+> Check parameters before flight!
+>
+> After test flight:
+> Set ATC_THR_MIX_MAN to 0.5
+> Set PSC_ACCZ_P to MOT_THST_HOVER
+> Set PSC_ACCZ_I to 2*MOT_THST_HOVER
+>
+> Happy flight!
+
+[ATC_THR_MIX_MAN](https://ardupilot.org/copter/docs/parameters.html#atc-thr-mix-man-throttle-mix-manual): Throttle Mix Manual
+
+Приоритет управления тягой и ориентацией, используемый во время активного полета (более высокие значения означают, что мы отдаем приоритет управлению ориентацией над тягой)
+
+Options: 0.1 .. 0.9
+
+[PSC_ACCZ_P](https://ardupilot.org/copter/docs/parameters.html#psc-accz-p-acceleration-vertical-controller-p-gain): Acceleration (vertical) controller P gain
+
+Коэффициент усиления контроллера ускорения (вертикального). Преобразует разницу между желаемым вертикальным ускорением и фактическим ускорением в выходной сигнал двигателя.
+
+Options: 0.200 .. 1.500
+
+[PSC_ACCZ_I](https://ardupilot.org/copter/docs/parameters.html#psc-accz-i-acceleration-vertical-controller-i-gain): Acceleration (vertical) controller I gain
+
+Усиление контроллера ускорения (вертикального) I. Корректирует долгосрочную разницу между желаемым вертикальным ускорением и фактическим ускорением.
+
+Options: 0.000 .. 3.000
+
+[MOT_THST_HOVER](https://ardupilot.org/copter/docs/parameters.html#mot-thst-hover-thrust-hover-value): Thrust Hover Value
+
+Тяга двигателя, необходимая для зависания, выраженная числом от 0 до 1
+
+Options: 0.2 .. 0.8
+
+Значение вычисляется во время Calculate Initial Tune Params
+
+## Battery Monitor
+
