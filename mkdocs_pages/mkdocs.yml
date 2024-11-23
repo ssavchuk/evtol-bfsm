@@ -36,6 +36,7 @@ nav:
     - PID:
       - Что такое PID, на что влияет и как настроить: theory/pid/chto-takoe-pid-na-chto-vliyaet-i-kak-nastroit/chto-takoe-pid-na-chto-vliyaet-i-kak-nastroit.md
     - IMU: theory/IMU.md
+    - EKF: theory/EKF.md
     - MAVLink: theory/MAVLink.md
     - Питание (аккумуляторы): theory/power.md
   - Разное:
