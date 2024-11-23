@@ -2,8 +2,9 @@
 
 CUAV V5+ Autopilot Pixhack PX4 APM Flight Controller
 
-![CUAV V5+.jpg](CUAV V5+.jpg)
+![](CUAV V5+.jpg){: style="width:50%"}
 
+<image >
 # Прошивка
 
 ArduPilot 4.5.7
@@ -21,7 +22,7 @@ Setup -> Mandatory Hardware -> Frame Type -> X
 
 <span style="color:red">Настроить до калибровки компаса!</span>
 
-[NEO 3 Pro GPS](../../../settings/equipment/GPS/NEO_3_Pro_GPS)
+[NEO 3 Pro GPS](../../settings/equipment/GPS/NEO_3_Pro_GPS.md)
 
 ## OLED Dosplay
 

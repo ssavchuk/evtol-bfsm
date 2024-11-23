@@ -38,3 +38,5 @@ mkdocs gh-deploy
 [Пошаговая инструкция как использовать MkDocs для создания сайта с документацией продукта](https://habr.com/ru/companies/rostelecom/articles/570098/)
 
 [Docs as Code для художественной литературы. Делаем творческий сайт ребенка с помощью MkDocs](https://habr.com/ru/articles/720584/)
+
+https://www.mkdocs.org/user-guide/configuration/

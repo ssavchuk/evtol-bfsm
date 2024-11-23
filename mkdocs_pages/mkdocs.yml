@@ -7,12 +7,14 @@ site_url: https://ssavchuk.github.io/evtol-bfsm
 
 # site_url: https://www.mkdocs.org/
 
-# site_author: BFSM Team
+site_author: BFSM Team
 
-# repo_url: https://github.com/mkdocs/mkdocs/
+repo_url: https://github.com/ssavchuk/evtol-bfsm
 
 nav:
   - Home: index.md
+  - Блог:
+    - blog/index.md
   - Летаки:
     - BFSM: drones/BFSM/BFSM.md
     - Чемодан: drones/suitcase/suitcase.md
@@ -38,6 +40,7 @@ nav:
 
 markdown_extensions:
   - markdown.extensions.nl2br
+  - attr_list
 
 # theme: material
 # theme: bootstrap4
@@ -64,12 +67,34 @@ theme:
 plugins:
   - search:
       lang: ["ru", "en"]
-  - i18n:
-      docs_structure: suffix
-      languages:
-        - locale: ru
-          name: Russian
-          default: true
-          build: true
-          site_name: "Документация для проекта eVTOL BFSM"
+  # - i18n:
+  #     docs_structure: suffix
+  #     languages:
+  #       - locale: ru
+  #         name: Russian
+  #         default: true
+  #         build: true
+  #         site_name: "Документация для проекта eVTOL BFSM"
+  - blog:
+      post_url_format: "{date}/{file}"
+      categories: false
+      blog_toc: true
+      archive: false
+      post_readtime_words_per_minute: 250
+      pagination: false
+  # - blog:
+  #     enabled: true
+  #     blog_dir: blog
+  #     post_url_format: "{date}/{file}"
+  #     post_dir: "{blog}/posts"
+  #     categories: false
+  #     blog_toc: true
+  #     archive: false
+  #     post_readtime_words_per_minute: 250
+  #     pagination: false
 
+validation:
+  links:
+    absolute_links: relative_to_docs
+    anchors: warn
+    unrecognized_links: warn
