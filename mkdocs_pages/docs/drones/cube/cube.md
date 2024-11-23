@@ -4,7 +4,6 @@ CUAV V5+ Autopilot Pixhack PX4 APM Flight Controller
 
 ![](CUAV V5+.jpg){: style="width:50%"}
 
-<image >
 # Прошивка
 
 ArduPilot 4.5.7
