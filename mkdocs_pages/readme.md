@@ -1,5 +1,10 @@
 ## Настройка окружения
 
+Скачать и установить [python версии 3.12.7](https://www.python.org/ftp/python/3.12.7/python-3.12.7-amd64.exe) (т.к. данная версия используется в action для деплоя на github.com)
+
+> **Note**
+> Не забыть установить галочку "Add Python to environment variables"
+
 ```
 python -m venv .venv
 ```
@@ -14,20 +19,21 @@ windows:
 source .venv\Scripts\activate
 ```
 
+Установить зависимости и запустить локальный web сервер.
 ```
 cd mkdocs_pages
-python -m install -r requirements.txt
 python -m pip install -r requirements.txt
 python -m mkdocs serve
 ```
 
 ## Деплой:
 
+Не обязательно, т.е. на github.com через actions настроен автодеплой
+
 ```
 cd mkdocs_pages
 mkdocs gh-deploy
 ```
-
 
 ## Материалы:
 
