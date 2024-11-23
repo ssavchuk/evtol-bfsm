@@ -26,6 +26,7 @@ nav:
       - Дисплеи: settings/equipment/display.md
     - Параметры: settings/parameters.md
     - ВМГ: settings/vmg.md
+    - PID: settings/PID/PID.md
     - Режимы полётов: settings/flight_modes.md
     - Компенсация горизонта: settings/horizon_compensation.md
     - Прошивки: settings/firmware.md
