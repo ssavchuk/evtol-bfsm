@@ -119,3 +119,74 @@ Options: 0.2 .. 0.8
 
 ## Battery Monitor
 
+Monitor: 
+
+BATT_AMP_PERVLT 57,93103
+
+## Каналы
+
+Откалибровать Каналы
+
+Setup -> Radio Calibration
+
+Config -> User Params
+
+7 - Motor Emerhency Stop
+
+ArmDisarm (4.2 and higher)
+
+Setup -> Mandatory Hardware -> Flight Modes
+
+Flight Mode 1: Auto
+Flight Mode 2: Stabilize
+Flight Mode 3: AltHold
+Flight Mode 4: Loiter
+Flight Mode 5: FlowHold
+Flight Mode 6: Land
+
+## ESC Calibration
+
+Setup -> Mandatory Hardware -> Esc Calibration
+
+ESC Type: DShot120
+
+## Sonar Range
+
+TELEM2 (flow control)
+
+TFmini Plus lidar
+
+https://ardupilot.org/copter/docs/common-benewake-tfmini-lidar.html
+
+
+SERIAL2_PROTOCOL = 9 (Lidar) (RangeFinder)
+
+SERIAL2_BAUD = 115 (115200 baud)
+
+RNGFND1_TYPE = 20 (Benewake-Serial)
+
+
+RNGFND1_MIN_CM = 30 for TFmini, =10 for TFminiPlus
+
+RNGFND1_MAX_CM = 1000 for indoor use OR 600 for outdoors. This is the distance in centimeters that the rangefinder can reliably read.
+
+RNGFND1_GNDCLEAR = 10 or more accurately the distance in centimetres from the range finder to the ground when the vehicle is landed. This value depends on how you have mounted the rangefinder.
+
+
+RNGFND1_GNDCLEAR = 16
+
+<span style="color:red">**требуется перезагрузка!**</span>
+
+## EKF
+
+EK3_SRC1_POSZ 2 (RangeFinder)
+
+
+
+
+MOT_HOVER_LEARN
+
+
+
+
+ANGLE_MAX -> 1500
