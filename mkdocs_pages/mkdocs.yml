@@ -24,6 +24,9 @@ nav:
       - GPS:
         - NEO 3 Pro GPS: settings/equipment/GPS/NEO_3_Pro_GPS.md
       - Дисплеи: settings/equipment/display.md
+      - PX4FLOW: settings/equipment/PX4FLOW.md
+      - Lidar C1 360: settings/equipment/Lidar_C1_360.md
+      - Range Finder Istra24: settings/equipment/Range_Finder_Istra24.md
     - Параметры: settings/parameters.md
     - ВМГ: settings/vmg.md
     - PID: settings/PID/PID.md
@@ -40,6 +43,7 @@ nav:
     - EKF: theory/EKF.md
     - MAVLink: theory/MAVLink.md
     - Питание (аккумуляторы): theory/power.md
+  - Руководства: manuals/manuals.md
   - Разное:
     - Список для полевых исспытаний: misc/field_tests_checklist.md
 
