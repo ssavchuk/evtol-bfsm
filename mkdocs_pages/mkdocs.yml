@@ -28,6 +28,7 @@ nav:
       - Lidar C1 360: settings/equipment/Lidar_C1_360.md
       - Range Finder Istra24: settings/equipment/Range_Finder_Istra24.md
     - Параметры: settings/parameters.md
+    - Initial Tune Params: settings/initial_tune_params.md
     - ВМГ: settings/vmg.md
     - PID: settings/PID/PID.md
     - Режимы полётов: settings/flight_modes.md
@@ -43,7 +44,11 @@ nav:
     - EKF: theory/EKF.md
     - MAVLink: theory/MAVLink.md
     - Питание (аккумуляторы): theory/power.md
+    - ESC: theory/esc.md
+    - PPM: theory/PPM.md
+    - Термины: theory/terms.md
   - Руководства: manuals/manuals.md
+  - Книги: books/books.md
   - Разное:
     - Список для полевых исспытаний: misc/field_tests_checklist.md
 
