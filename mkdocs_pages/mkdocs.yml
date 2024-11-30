@@ -37,6 +37,11 @@ nav:
   - Оборудование:
     - Моторы:
       - 25KW MP 120100 Outrunner Brushless Motor: equipment\motors\25KW_MP_120100_Outrunner_Brushless_Motor\MP120100.md
+    - Радары и лидары:
+      - Radar ISTRA24: equipment\lidar_radar\radar_istra24\istra24.md
+      - RPLidar C1: equipment\lidar_radar\RPLidar_C1\RPLidarC1.md
+    - Модули питания:
+      - APM Pixhawk Power Module: equipment\PM\APM_Pixhawk_Power_Module\APM_Pixhawk_Power_Module.md
   - Теория:
     - PID:
       - Что такое PID, на что влияет и как настроить: theory/pid/chto-takoe-pid-na-chto-vliyaet-i-kak-nastroit/chto-takoe-pid-na-chto-vliyaet-i-kak-nastroit.md
