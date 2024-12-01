@@ -32,6 +32,7 @@ nav:
     - ВМГ: settings/vmg.md
     - PID: settings/PID/PID.md
     - Режимы полётов: settings/flight_modes.md
+    - Автовзлёт: settings/takeoff.md
     - Компенсация горизонта: settings/horizon_compensation.md
     - Прошивки: settings/firmware.md
   - Оборудование:
