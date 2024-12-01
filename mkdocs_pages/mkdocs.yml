@@ -34,6 +34,7 @@ nav:
     - Режимы полётов: settings/flight_modes.md
     - Автовзлёт: settings/takeoff.md
     - Компенсация горизонта: settings/horizon_compensation.md
+    - EKF: settings/EKF.md
     - Прошивки: settings/firmware.md
   - Оборудование:
     - Моторы:
