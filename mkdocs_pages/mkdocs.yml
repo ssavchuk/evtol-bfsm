@@ -43,6 +43,7 @@ nav:
       - RPLidar C1: equipment\lidar_radar\RPLidar_C1\RPLidarC1.md
     - Модули питания:
       - APM Pixhawk Power Module: equipment\PM\APM_Pixhawk_Power_Module\APM_Pixhawk_Power_Module.md
+    - BMS: equipment\bms.md
   - Теория:
     - PID:
       - Что такое PID, на что влияет и как настроить: theory/pid/chto-takoe-pid-na-chto-vliyaet-i-kak-nastroit/chto-takoe-pid-na-chto-vliyaet-i-kak-nastroit.md
