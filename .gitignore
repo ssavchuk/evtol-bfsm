@@ -1,2 +1,5 @@
 mkdocs_pages/site
+mkdocs_pages/.venv
+mkdocs_pages/venv
 .venv
+venv

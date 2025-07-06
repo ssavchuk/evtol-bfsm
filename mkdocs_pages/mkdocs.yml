@@ -29,11 +29,13 @@ nav:
       - Range Finder Istra24: settings/equipment/Range_Finder_Istra24.md
     - Параметры: settings/parameters.md
     - Initial Tune Params: settings/initial_tune_params.md
-    - ВМГ: settings/vmg.md
     - PID: settings/PID/PID.md
     - Режимы полётов: settings/flight_modes.md
     - Автовзлёт: settings/takeoff.md
     - Компенсация горизонта: settings/horizon_compensation.md
+    - Журнал: settings/log.md
+    - Миссии: settings/mission_commands.md
+    - ВМГ: settings/vmg.md
     - EKF: settings/EKF.md
     - Прошивки: settings/firmware.md
   - Оборудование:
