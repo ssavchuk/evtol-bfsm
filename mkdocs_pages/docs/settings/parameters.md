@@ -14,6 +14,10 @@
 
 Those parameters set how the vehicle responds to navigation commands (for example to make it more aggressive).
 
+## ATC
+
+**Attitude Control (ATC)**
+
 ## PILOT_ACCEL_Z: Pilot vertical acceleration
 
 [PILOT_ACCEL_Z](https://ardupilot.org/copter/docs/parameters.html#pilot-accel-z-pilot-vertical-acceleration)
