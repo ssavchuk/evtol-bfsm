@@ -18,6 +18,21 @@ Those parameters set how the vehicle responds to navigation commands (for exampl
 
 **Attitude Control (ATC)**
 
+## HUD
+
+**HUD (Head-Up Display)** — это индикатор на лобовом стекле.
+
+Это прозрачный дисплей, который проецирует самую важную летную и боевую информацию прямо на стекло кабины пилота. Его главная цель — позволить пилоту получать критически важные данные, не опуская голову и не отводя глаз от воздушной обстановки и цели.
+
+Основные элементы на HUD:
+
+* Искусственный горизонт: Показывает крен и тангаж самолета относительно земли.
+* Скорость (AirSpeed): Текущая воздушная скорость.
+* Высота (Altitude): Высота полета.
+* Курс (Heading): Направление полета.
+* Угол атаки (AoA - Angle of Attack): Критически важен для взлета и посадки.
+* Вектор скорости (Velocity Vector / Flight Path Marker): Показывает, куда на самом деле летит самолет (его фактическую траекторию).
+
 ## PILOT_ACCEL_Z: Pilot vertical acceleration
 
 [PILOT_ACCEL_Z](https://ardupilot.org/copter/docs/parameters.html#pilot-accel-z-pilot-vertical-acceleration)

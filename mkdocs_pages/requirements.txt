@@ -4,4 +4,5 @@ mkdocs-material
 #mkdocs-theme-bootstrap4
 # mkdocs-video
 mkdocs-static-i18n
+mkdocs-blog-plugin
 pymdown-extensions
