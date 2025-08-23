@@ -1,5 +1,7 @@
 # Куб
 
+[Параметры](cube.param)
+
 CUAV V5+ Autopilot Pixhack PX4 APM Flight Controller
 
 ![](CUAV V5+.jpg){: style="width:50%"}
@@ -142,7 +144,14 @@ Setup -> Optional Hardware -> Motor Test
 * **MOT_SPIN_MAX**: 0,95
 * **MOT_SPIN_MIN**: 0,15
 
+<span style="color:red">**Перепутаны моторы и направление**</span>
+
 > Если перепутаны моторы, то можно ремаппинг выполнить в Setup -> Mandatory Hardware -> Servo Output
+
+1 -> Motor1
+2 -> Motor3
+3 -> Motor2
+4 -> Motor4
 
 > Если перепутан канал по тангажу (pitch), то RC2_REVERSED установить в 1
 
