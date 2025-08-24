@@ -1,0 +1,2550 @@
+
+<!doctype html>
+<html lang="ru" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Project documentation for eVTOL BFSM.">
+      
+      
+        <meta name="author" content="BFSM Team">
+      
+      
+        <link rel="canonical" href="https://ssavchuk.github.io/evtol-bfsm/theory/pid/chto-takoe-pid-na-chto-vliyaet-i-kak-nastroit/chto-takoe-pid-na-chto-vliyaet-i-kak-nastroit/">
+      
+      
+        <link rel="prev" href="../../../../settings/firmware/">
+      
+      
+        <link rel="next" href="../../../IMU/">
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
+    
+    
+      
+        <title>Что такое PID, на что влияет и как настроить - eVTOL BFSM documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#pid" class="md-skip">
+          Перейти к содержанию
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Верхний колонтитул">
+    <a href="../../../.." title="eVTOL BFSM documentation" class="md-header__button md-logo" aria-label="eVTOL BFSM documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            eVTOL BFSM documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Что такое PID, на что влияет и как настроить
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Поиск" placeholder="Поиск" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Поиск">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистить" aria-label="Очистить" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Инициализация поиска
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ssavchuk/evtol-bfsm" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навигация" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="eVTOL BFSM documentation" class="md-nav__button md-logo" aria-label="eVTOL BFSM documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    eVTOL BFSM documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ssavchuk/evtol-bfsm" title="Перейти к репозиторию" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../blog/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Блог
+    
+  </span>
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Блог
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Летаки
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Летаки
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../drones/BFSM/BFSM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    BFSM
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../drones/suitcase/suitcase/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Чемодан
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../drones/cube/cube/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Куб
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Настройки
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Настройки
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Оборудование
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            Оборудование
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_1" id="__nav_4_1_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    GPS
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            GPS
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../settings/equipment/GPS/NEO_3_Pro_GPS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    NEO 3 Pro GPS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../settings/equipment/display/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Дисплеи
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../settings/equipment/PX4FLOW/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PX4FLOW
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../settings/equipment/Lidar_C1_360/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lidar C1 360
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../settings/equipment/Range_Finder_Istra24/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Range Finder Istra24
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Подключение
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Подключение
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../settings/wifi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    wifi
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../settings/parameters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Параметры
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../settings/initial_tune_params/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Initial Tune Params
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../settings/compass/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Настрока компаса
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../settings/PID/PID/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PID
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../settings/flight_modes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Режимы полётов
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../settings/takeoff/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Автовзлёт
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../settings/horizon_compensation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Компенсация горизонта
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../settings/log/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Журнал
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../settings/mission_commands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Миссии
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../settings/vmg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ВМГ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../settings/EKF/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    EKF
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../settings/firmware/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Прошивки
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Оборудование
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Оборудование
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Моторы
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            Моторы
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../equipment/motors/25KW_MP_120100_Outrunner_Brushless_Motor/MP120100.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    25KW MP 120100 Outrunner Brushless Motor
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Радары и лидары
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            Радары и лидары
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../equipment/lidar_radar/radar_istra24/istra24.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Radar ISTRA24
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../equipment/lidar_radar/RPLidar_C1/RPLidarC1.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RPLidar C1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Модули питания
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            Модули питания
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../equipment/PM/APM_Pixhawk_Power_Module/APM_Pixhawk_Power_Module.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    APM Pixhawk Power Module
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../equipment/bms.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    BMS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Теория
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Теория
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    PID
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6_1">
+            <span class="md-nav__icon md-icon"></span>
+            PID
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Что такое PID, на что влияет и как настроить
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Что такое PID, на что влияет и как настроить
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="На этой странице:">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      На этой странице:
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pid_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Что такое PID в квадрокоптерах
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pid_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Как работают значения PID, их изменение
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Как работают значения PID, их изменение">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#p" class="md-nav__link">
+    <span class="md-ellipsis">
+      Усиление P
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#i" class="md-nav__link">
+    <span class="md-ellipsis">
+      Усиление I
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d" class="md-nav__link">
+    <span class="md-ellipsis">
+      Усиление D
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pid_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Нужно ли настраивать PID?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pid_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Настройка PID квадрокоптера
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Настройка PID квадрокоптера">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#yaw-pid" class="md-nav__link">
+    <span class="md-ellipsis">
+      Yaw (рыскание) и PID
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p-roll" class="md-nav__link">
+    <span class="md-ellipsis">
+      P на Roll (крен)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p-pitch-a" class="md-nav__link">
+    <span class="md-ellipsis">
+      P на Pitch (высотa)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tpa" class="md-nav__link">
+    <span class="md-ellipsis">
+      TPA
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-roll-pitch" class="md-nav__link">
+    <span class="md-ellipsis">
+      D на Roll и Pitch (на крен и высоту)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#i-roll" class="md-nav__link">
+    <span class="md-ellipsis">
+      I на Roll (на крен)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anti-gravity-gain" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anti Gravity Gain
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#yaw-p" class="md-nav__link">
+    <span class="md-ellipsis">
+      Yaw P (Рыскание Р)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#yaw-i-i" class="md-nav__link">
+    <span class="md-ellipsis">
+      Yaw I (Рыскание I)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-term-set-point-weight" class="md-nav__link">
+    <span class="md-ellipsis">
+      D-Term Set Point Weight
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#-pid" class="md-nav__link">
+    <span class="md-ellipsis">
+      Не все проблемы из-за плохих настроек PID
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Не все проблемы из-за плохих настроек PID">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Вибрация
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Центр тяжести (CG)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Вопрос: «Какие у тебя ПИДы?» — неправильный вопрос!
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pid_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Когда нужно перенастраивать PID?
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../IMU/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    IMU
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../EKF/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    EKF
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../MAVLink/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MAVLink
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../power/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Питание (аккумуляторы)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../esc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ESC
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../PPM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PPM
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../terms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Термины
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../manuals/manuals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Руководства
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../books/books/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Книги
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Разное
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            Разное
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../misc/field_tests_checklist/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Список для полевых исспытаний
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../misc/roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Roadmap
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="На этой странице:">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      На этой странице:
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pid_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Что такое PID в квадрокоптерах
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pid_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Как работают значения PID, их изменение
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Как работают значения PID, их изменение">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#p" class="md-nav__link">
+    <span class="md-ellipsis">
+      Усиление P
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#i" class="md-nav__link">
+    <span class="md-ellipsis">
+      Усиление I
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d" class="md-nav__link">
+    <span class="md-ellipsis">
+      Усиление D
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pid_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Нужно ли настраивать PID?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pid_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Настройка PID квадрокоптера
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Настройка PID квадрокоптера">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#yaw-pid" class="md-nav__link">
+    <span class="md-ellipsis">
+      Yaw (рыскание) и PID
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p-roll" class="md-nav__link">
+    <span class="md-ellipsis">
+      P на Roll (крен)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p-pitch-a" class="md-nav__link">
+    <span class="md-ellipsis">
+      P на Pitch (высотa)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tpa" class="md-nav__link">
+    <span class="md-ellipsis">
+      TPA
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-roll-pitch" class="md-nav__link">
+    <span class="md-ellipsis">
+      D на Roll и Pitch (на крен и высоту)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#i-roll" class="md-nav__link">
+    <span class="md-ellipsis">
+      I на Roll (на крен)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anti-gravity-gain" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anti Gravity Gain
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#yaw-p" class="md-nav__link">
+    <span class="md-ellipsis">
+      Yaw P (Рыскание Р)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#yaw-i-i" class="md-nav__link">
+    <span class="md-ellipsis">
+      Yaw I (Рыскание I)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-term-set-point-weight" class="md-nav__link">
+    <span class="md-ellipsis">
+      D-Term Set Point Weight
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#-pid" class="md-nav__link">
+    <span class="md-ellipsis">
+      Не все проблемы из-за плохих настроек PID
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Не все проблемы из-за плохих настроек PID">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Вибрация
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Центр тяжести (CG)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Вопрос: «Какие у тебя ПИДы?» — неправильный вопрос!
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pid_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Когда нужно перенастраивать PID?
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="pid">Что такое PID, на что влияет и как настроить</h1>
+<p>Многие прошивки для квадрокоптеров, такие как Betaflight и KISS, позволяют пилотам настраивать значения PID для повышения эффективности полета. В этой статье я расскажу, что такое PID, как это влияет на стабильность и обработку полёта. Также расскажу о некоторых простых методах настройки PID квадрокоптера.</p>
+<h2 id="pid_1">Что такое PID в квадрокоптерах</h2>
+<p>К сожалению, в этом мире не все идеально, поэтому были придуманы PID (далее по тексту ПИД), чтобы приблизиться к идеалам.</p>
+<p>PID — это функция в полетном контроллере. Эта функция считывает данные с датчиков и передает двигателям, как быстро им нужно вращаться. В конечном итоге, именно так достигается стабильность и идеальность полета квадрокоптера.</p>
+<p>PID обозначает производную пропорционального интеграла. ПИД-регулятор представляет собой замкнутую систему управления, которая пытается получить фактический результат ближе к желаемому результату, внеся коррективы в выходные данные, которые отправляются двигателям. Если происходит ошибка, она возвращается в начало и цикл повторяется.</p>
+<p>ПИД-регулятор вычисляет значение «ошибка» как разность между измеряемой величиной и желаемой величиной. Контроллер пытается свести к минимуму ошибку, отрегулировав поступающие значения управления.</p>
+<p>Работает это так: в квадрокоптере PID получает данные с датчиков и сравнивает их с поступившими данными. Разница между этими данные называется «ошибка» или «error» по-английски и старается уменьшить в последующем эту ошибку. Посмотрите на схему, чтобы понять, как PID стабилизирует квадрокоптер:</p>
+<p><img alt="Схема работы PID" src="../PID-quadcopter.jpg" /></p>
+<p>В ПИД-регуляторе есть три функции: P, I и D. Эти значения могут быть интерпретированы с точки зрения времени:</p>
+<ul>
+<li>P обрабатывает ошибку, которая происходит в данный момент — чем дальше она от заданного значения, тем сильнее она корректируется</li>
+<li>D — корректирует будущие ошибки, смотря на то, как быстро вы приближаетесь к заданной точке и насколько происходит противодействие P при приближении к заданной точке</li>
+<li>I — Анализирует прошлые ошибки, которые происходят в течение какого-то времени (например, если ось постоянно смещается от заданного значения из-за ветра) и противодействует этой силе увеличивая скорость нужных двигателей.</li>
+</ul>
+<p>Если вы сейчас ничего не поняли, то это нормально! Вам не обязательно понимать теорию работы PID и уметь отлично настраивать PID квадрокоптера. Можете сразу перейти к главе «Простая настройка PID значений», а если все же хотите узнать подробнее о ПИДах, то читайте дальше.</p>
+<p>Чтобы был какой-либо контроль над квадрокоптером:</p>
+<ul>
+<li>Сначала нам нужно узнать угловую скорость дрона (как быстро квадрокоптер двигается по каждой оси).</li>
+<li>Зная, какая угловая скорость нам нужна, можно оценить отклонения.</li>
+<li>Теперь мы можем применить 3 алгоритма управления отклонением, чтобы внести корректировки на выходы двигателей (т.е. двигателям будут поступать немного другие команды в определенный момент).</li>
+</ul>
+<p>Объяснил максимально просто — как работают PID на квадрокоптере. На практике, каждый из этих трех параметров представляет собой уникальные эффекты и характеристики, а также устойчивость для каждого квадрокоптера.</p>
+<p>Эти параметры представляют собой числа, с которыми можно «играть», это коэффициенты 3 алгоритмов, о которых я писал выше. Коэффициенты изменяют влияние каждого алгоритма на выход данных. Сейчас мы рассмотрим, какие эффекты получаются при изменении коэффициентов PID.</p>
+<p>Квадрокоптер может перемещаться по 3 осям и для каждой оси есть свое PID-значение. Это означает, что у нас будет отдельный набор коэффициентов ПИД для каждой оси (Pitch, Roll и Yaw), всего 9 значений, которые мы можем настроить.</p>
+<p><img alt="Алгоритм работы PID" src="../pid.jpg" /></p>
+<p>Алгоритм работы PID</p>
+<p>Повторюсь, не обязательно полностью понимать как работает PID, чтобы нормально летать, однако, если вам интересна более глубокая теория, то далее будет интересное объяснение, постараюсь изложить все как можно в более легкой форме.</p>
+<h2 id="pid_2">Как работают значения PID, их изменение</h2>
+<p>Как правило, изменение значений ПИД (усиления) оказывает влияние на поведение квадрокоптера:</p>
+<h3 id="p"><strong>Усиление P</strong></h3>
+<p>P определяет, насколько жестко контроллер полета исправляет погрешности, чтобы достичь желаемой траектории полета. Этот параметр регулирует чувствительность и отзывчивость на изменения положения стиков. Чем выше это число, тем выше чувствительность и отзывчивость.</p>
+<p>Более высокий коэффициент Р, означает более четкое управление, в то время как низкий Р — более мягкое и плавное управление. Но если это значение слишком большое, дрон станет слишком чувствительным и начнет сам себя корректировать, а также начнутся колебания значений положения стиков.</p>
+<p>Можно снизить P, чтобы уменьшить колебания, но тогда дрон будет нечетко выполнять ваши команды, поэтому нужно будет поиграть с I и D, чтобы это компенсировать.</p>
+<h3 id="i"><strong>Усиление I</strong></h3>
+<p>Значение I определяет, насколько сильно он будет поддерживать квадрокоптер при воздействии внешних факторов, таких как ветер и смещение центра тяжести, например.</p>
+<p><strong>Это настройка жесткости при поворотах квадрокоптера.</strong></p>
+<p>Обычно, настройки по умолчанию вполне хорошо справляются с этим, но если вы заметили некоторый дрейф дрона без вашей команды, то увеличьте немного значение I. Если значение будет слишком низкое, вам часто придется исправлять траекторию полета дроном, особенно, если вы часто меняете уровень газа.</p>
+<p>Если значение I будет слишком высокое, то поведение квадрокоптера будет «деревянным», он будет слабо реагировать на ваши изменения положения стика на пульте. Никакие регуляторы оборотов, двигатели и пропеллеры не одинаковы, каждый на какую-то часть, но работает по-своему, поэтому когда вы даете резкий газ, а потом резко опускаете стик газа, один двигатель будет останавливаться быстрее другого и наоборот, все это вызывает провалы в положении квадрокоптера в воздухе, один двигатель еще имеет тягу, а другой уже нет.</p>
+<p>Таким образом, I используется для исправления таких мелких проблем.</p>
+<h3 id="d">Усиление D</h3>
+<p>D работает как демпфер (глушитель, гаситель) и уменьшает чрезмерную коррекцию и регулирование коэффициента P. Увеличивая значение D, вы смягчаете воздействие Р, как бы добавляя «пружину» и также минимизирует вибрацию пропеллеров.</p>
+<p>Если D будет слишком маленьким, то дрон будет как бы «отскакивать» назад в конце флипов и кренов, а также у вас будет сильная вибрация, вызванная вертикальным снижением.</p>
+<p>Слишком большое значение тоже приводит к вибрациям. В попытке стабилизировать квадркоптер, полетный контроллер будет командовать регуляторам оборотов, чтобы те то прибавляли обороты двигателям, то уменьшали с такой скоростью (в смысле быстрее-медленнее), что из-за этого двигатели перегреются и сгорят. Вибрация также будет действовать на контроллер полета и со временем ситуация будет ухудшаться.</p>
+<p>Еще одним побочным эффектом от D является то, что квадрокоптер становится «мягким», то есть реакция на команды слишком вялая.</p>
+<p><img alt="PID формулы" src="../PID-three-algorithms.jpg" /></p>
+<h2 id="pid_3">Нужно ли настраивать PID?</h2>
+<p>На сегодня программное обеспечение для квадрокоптеров имеет сложную фильтрацию шумов и оптимизированные алгоритмы для полетов. Квадрокоптер может хорошо летать прямо из коробки на основе стандартных значений PID, если, конечно вы не используете некачественные детали или квадрокоптер очень плохо настроен.</p>
+<blockquote>
+<p>Сделаем вывод, что в эти значения в большинстве своем лезть не требуется, разница будет между «хорошо летающий квадрокоптер» и «идеально летающий квадрокоптер».</p>
+</blockquote>
+<h2 id="pid_4">Настройка PID квадрокоптера</h2>
+<p>Перед настройкой:</p>
+<ul>
+<li>Всегда настраивайте свой квадрокоптер в режиме АКРО (ACRO)!</li>
+<li>Убедитесь, что центр тяжести находится прямо посередине, так как центр тяжести оказывает значительное влияние на то, как хорошо будет летать ваш дрон.</li>
+</ul>
+<p>Нет правильного или неправильного способа настройки PID, все, что хорошо работает для вас — и есть правильная настройка. PID настраиваются индивидуально под каждого пилота.</p>
+<p>Обычно я всегда начинаю летать на стандартных настройках, а настройки в прошивках Betaflight и KISS хорошо работают для большинства квадрокоптеров.</p>
+<p>Когда я летаю и замечаю какое-нибудь нежелательное поведение, я настраиваю конкретное значение и снова проверяю в полете. Если у квадрокоптера много вибраций, можно поиграть со значением PID, предварительно уменьшив все значения до половины или более, чтобы убедиться, что они не слишком высоки для начала.</p>
+<p>Каждый раз, когда изменяете значения ПИД, задавайтесь вопросом: «Стало лучше или хуже». Найдите значение, на котором характеристика полета будет наилучшей.</p>
+<p>За один раз настраивайте одну ось, сначала крен, потом высоту и затем рыскание. На каждой оси я настраиваю одно значение за раз, начиная с коэффициента усиления P, затем усиления D и, наконец I. Также вам нужно будет постоянно возвращаться к тонкой настройке, потому что одно значение может влиять на другое.</p>
+<h3 id="yaw-pid">Yaw (рыскание) и PID</h3>
+<p>Самая сложная часть для понимания при настройке ПИДов — ось рыскания. Но это также самая легкая часть, потому что вы можете оставить ее по умолчанию в Betaflight, и ваш квадрокоптер будет летать просто отлично.</p>
+<p>PID могут помочь с улучшением  рыскания дрона, но вы должны учитывать и многие другие факторы, которые могут привести к дестабилизация рыскания.</p>
+<blockquote>
+<p><strong>Одним из симптомов плохого рыскания</strong>: вы делаете быстрое рыскание и в этот момент даете резкий газ, а дрон по оси (yaw) рыскания не остается на этом же уровне.</p>
+</blockquote>
+<p>Хорошая работа по этой оси также зависит от качества оборудования: двигателей, пропеллеров и регуляторов оборотов. Ими определяется, на сколько быстро дрон сможет перемещаться по оси рыскания (yaw).</p>
+<p>Чтобы улучшить рыскание, вы можете попробовать следующее:</p>
+<ul>
+<li>использование более тяжелых пропеллеров, за счет обратного крутящего момента (можно сравнить с юлой, ее раскрутили и она крутится).</li>
+<li>использование двигателей с более высоким KV</li>
+<li>использование регуляторов оборотов с сильным торможением — если торможение слабое, то тормозящие двигатели не успевают останавливаться с такой же скоростью, как увеличиваются по скорости противоположные двигатели.</li>
+<li>уменьшение дальности расположения двигателей поможет увеличить скорость рыскания, чем короче будут лучи (то, на что крепятся двигатели), тем быстрее будет происходить рыскание.</li>
+</ul>
+<h3 id="p-roll"><strong>P на Roll (крен)</strong></h3>
+<p>С хорошими настройками P квадрокоптер будет очень точно реагировать по крену на положение стика.</p>
+<p>Попытайтесь сделать резкий поворот, если Р слишком маленький, то дрон накренится в одну сторону, если слишком большой, вы получите сильную вибрацию и дёрганье. Если Р настроен правильно, то при совершении резких кренов — никаких вибраций и дёрганья не будет.</p>
+<h3 id="p-pitch-a"><strong>P на Pitch (высотa)</strong></h3>
+<p>Наберите высоту и опустите стик газа до конца вниз, после чего начните набирать газ, обратите внимание на набор высоты. Если квадрокоптер поднимается больше, чем нужно, то вероятно, что Р слишком мал, а если слишком быстрый набор, то Р нужно уменьшить.</p>
+<p>Настраивайте до тех пор, пока дрон не станет отзывчивым и проворным с минимальной вибрацией. Также присматривайтесь к двигателям если они дергаются, то это означает, что Р завышен и следует его немного понизить.</p>
+<h3 id="tpa"><strong>TPA</strong></h3>
+<p>ТРА — это настройка для снижения эффективности усиления P при увеличении дросселя (газа). Сделайте резкий газ и посмотрите, есть ли какие-либо колебания и вибрация, если да, то увеличьте ТРА. Хорошо настроенный ТРА даст вам очень гладкий газ. Лично я не использую ТРА выше 0,4.</p>
+<h3 id="d-roll-pitch"><strong>D на Roll и Pitch (на крен и высоту)</strong></h3>
+<p>Когда вы делаете трюки, такие как сальто и перевороты, вы наверняка замечали своеобразные отскоки в конце. Увеличение D может помочь в уменьшении этой проблемы. Будьте осторожны, так как большие значения D могут начать перегревать двигатели, поэтому регулируйте параметр с умом, ровно до того, чтобы проблемы исчезла, не больше. Также слишком большое значение D будет вызывать колебания и вибрацию в конце этих трюков.</p>
+<h3 id="i-roll"><strong>I на Roll (на крен)</strong></h3>
+<p>Наклоните (в полете, естественно) свой дрон вправо и влево и посмотрите, держит ли он этот наклон после того, как вы отпустили стик (напомню, все манипуляции в АКРО режиме), если он не держит угол наклона, то увеличьте значение I на Roll.</p>
+<p>Сделайте тоже самое для наклона вперед и назад. Это также будет зависеть и от силы ветра.</p>
+<h3 id="anti-gravity-gain"><strong>Anti Gravity Gain</strong></h3>
+<p>Летите по прямой и дайте пару раз (быстро) газа и посмотрите, сохраняет ли дрон положение. Если он опускается, то увеличьте это значение. Для меня идеальное значение было 3.</p>
+<h3 id="yaw-p"><strong>Yaw P (Рыскание Р)</strong></h3>
+<p>Yaw PID необходимо настроить отдельно. Значения по умолчанию обычно хорошо работают на всех дронах.</p>
+<p>Выполните резкое и быстрое рыскание, если после остановки квадрокоптер дрожит или вибрирует — уменьшите значение Р, если он опустится на одну сторону — увеличьте Р.</p>
+<p>Когда Р по рысканию слишком высок, то при рыскании квадрокоптер будет набирать высоту, в таком случае, Р следует уменьшить.</p>
+<h3 id="yaw-i-i"><strong>Yaw I (Рыскание I)</strong></h3>
+<p>Как говорилось выше, I используется для предотвращения дрейфа, но чрезмерное рыскание по I может привести к нестабильности и фактически уменьшить отзывчивость.  Yaw I никогда не должен быть выше, чем необходимое значение для предотвращения дрейфа. Если ничего не случилось, просто оставьте значение по умолчанию.</p>
+<h3 id="d-term-set-point-weight"><strong>D-Term Set Point Weight</strong></h3>
+<p>Если это значение слишком высокое, дрон будет менее отзывчивым и вести себя будет как робот, т.е. отвечать будет резко. Если значение будет низким, то отвечать на ваши действия будет более гладко и медленно. Я считаю, что хорошим значением будет 0,6.</p>
+<h2 id="-pid">Не все проблемы из-за плохих настроек PID</h2>
+<p>Перед настройкой PID, вы должны изучить и другие данные:</p>
+<h3 id="_1"><strong>Вибрация</strong></h3>
+<p>Не все колебания вызваны высоким значением P. Перед настройкой PID вам необходимо максимально устранить источники вибрации на вашем дроне. Например, балансировка двигателей и пропеллеров, жесткость рамы и т. д.</p>
+<h3 id="cg"><strong>Центр тяжести (CG)</strong></h3>
+<p>Центр тяжести должен быть ровно посередине, между всеми 4-мя двигателями. Плохая центровка приведет к тому, что одни двигатели будут работать больше, чем другие, отсюда перегрев моторов и плохая стабильность полета. Например, аккумулятор находится в задней части, вместо расположение по-середине и поэтому задние моторы будут работать на 100%, а передние на 80%. Вся масса на квадрокоптере должна быть отцентрована и расположена равномерно. По этой причине Х-образные рамы самые популярные.</p>
+<h2 id="_2">Вопрос: «Какие у тебя ПИДы?» — неправильный вопрос!</h2>
+<p>Довольно бессмысленно использовать чужие ПИДы на своем квадрокоптере. Каждый дрон уникален, его оборудование, да даже ветер и климат влияют на корректировку PID.</p>
+<h2 id="pid_5">Когда нужно перенастраивать PID?</h2>
+<p>Почти все компоненты квадрокоптера влияют на PID, поэтому когда вы меняете какой-нибудь компонент, проведите и настройку PID. Если в Betaflight и Cleanflight вы меняли Looptime, то тоже нужно будет подкорректировать PID.</p>
+<p><a href="https://profpv.ru/chto-takoe-pid-na-chto-vliyaet-i-kak-nastroit/">Оригинальная статья</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../../..", "features": ["content.code.copy", "tabs", "navigation.indexes"], "search": "../../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e \u0432 \u0431\u0443\u0444\u0435\u0440", "clipboard.copy": "\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432 \u0431\u0443\u0444\u0435\u0440", "search.result.more.one": "\u0415\u0449\u0451 1 \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.more.other": "\u0415\u0449\u0451 # \u043d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0435", "search.result.none": "\u0421\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u043e", "search.result.one": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e 1 \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0435", "search.result.other": "\u041d\u0430\u0439\u0434\u0435\u043d\u043e \u0441\u043e\u0432\u043f\u0430\u0434\u0435\u043d\u0438\u0439: #", "search.result.placeholder": "\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u043f\u0435\u0447\u0430\u0442\u0430\u0442\u044c \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430", "search.result.term.missing": "\u041e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442", "select.version": "\u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0435\u0440\u0441\u0438\u044e"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>
