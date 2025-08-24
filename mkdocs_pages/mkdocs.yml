@@ -31,6 +31,7 @@ nav:
       - wifi: settings/wifi.md
     - Параметры: settings/parameters.md
     - Initial Tune Params: settings/initial_tune_params.md
+    - Настрока компаса: settings/compass.md
     - PID: settings/PID/PID.md
     - Режимы полётов: settings/flight_modes.md
     - Автовзлёт: settings/takeoff.md
